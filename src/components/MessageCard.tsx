@@ -75,7 +75,7 @@ export function MessageCard({ message, onMessageDeleteAction }: MessageCardProps
         </div>
       </CardHeader>
       <CardContent>
-        {/* You can display additional message details here */}
+        {/*can be displayed additional message details here */}
       </CardContent>
     </Card>
   );
