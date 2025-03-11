@@ -4,7 +4,7 @@ import dbConnect from '@/lib/dbConnect';
 import UserModel from '@/model/User';
 import { User } from 'next-auth';
 
-export async function POST(request: Request) {
+export async function POST(_request: Request) {
   await dbConnect();
 
   const session = await getServerSession(authOptions);
@@ -17,7 +17,7 @@ export async function POST(request: Request) {
   }
 
   const userId = user._id;
-  const { acceptMessages } = await request.json();
+  const { acceptMessages } = await _request.json();
 
   try {
     // Update the user's message acceptance status

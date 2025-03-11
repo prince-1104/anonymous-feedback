@@ -8,9 +8,8 @@ import { toast } from "sonner";
 import { Message } from "@/model/User";
 import { ApiResponse } from "@/types/ApiResponse";
 import { zodResolver } from "@hookform/resolvers/zod";
-import axios, { AxiosError } from "axios";
+import axios from "axios";
 import { Loader2, RefreshCcw } from "lucide-react";
-import { User } from "next-auth";
 import { useSession } from "next-auth/react";
 import React, { useCallback, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
@@ -25,15 +24,15 @@ function UserDashboard() {
 
   const form = useForm({
     resolver: zodResolver(AcceptMessageSchema),
-    defaultValues: { acceptMessages: false }, // Default value
+    defaultValues: { acceptMessages: false },
   });
 
-  const { register, watch, setValue } = form;
+  const { watch, setValue } = form;
   const acceptMessages = watch("acceptMessages");
 
   const handleDeleteMessageAction = (messageId: string) => {
     setMessages((prevMessages) =>
-      prevMessages.filter((msg) => msg._id === messageId)
+      prevMessages.filter((msg) => msg._id !== messageId)
     );
   };
 
@@ -42,7 +41,7 @@ function UserDashboard() {
     try {
       const response = await axios.get<ApiResponse>("/api/accept-messages");
       setValue("acceptMessages", response.data.isAcceptingMessages ?? false);
-    } catch (error) {
+    } catch {
       toast.error("Failed to fetch message settings");
     } finally {
       setIsSwitchLoading(false);
@@ -55,7 +54,7 @@ function UserDashboard() {
       const response = await axios.get<ApiResponse>("/api/get-messages");
       setMessages(response.data.messages || []);
       if (refresh) toast.success("Showing latest messages");
-    } catch (error) {
+    } catch {
       toast.error("Failed to fetch messages");
     } finally {
       setIsLoading(false);
@@ -75,17 +74,16 @@ function UserDashboard() {
       });
       setValue("acceptMessages", checked);
       toast.success(response.data.message);
-    } catch (error) {
+    } catch {
       toast.error("Failed to update message settings");
     }
   };
 
   if (!session?.user) return <div>Loading...</div>;
 
-  const username = (session.user as User).username;
   const profileUrl =
     typeof window !== "undefined"
-      ? `${window.location.origin}/u/${username}`
+      ? `${window.location.origin}/u/${session.user.username}`
       : "";
 
   const copyToClipboard = () => {
