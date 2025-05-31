@@ -1,4 +1,4 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+A modern anonymous feedback app built with Next.js, MongoDB, and NextAuth. Users can receive messages without revealing their identity. Features include anonymous messaging, email verification, and a private inbox. Fully secure and responsive.
 
 ## Getting Started
 
