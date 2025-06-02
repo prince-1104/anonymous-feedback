@@ -14,6 +14,7 @@ import { useSession } from 'next-auth/react';
 import React, { useCallback, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { AcceptMessageSchema } from '@/schemas/acceptMessageSchema';
+import { useRouter } from 'next/navigation';
 
 // interface MessageResponse {
 //   _id: string;
@@ -29,6 +30,7 @@ function UserDashboard() {
   const [isError, setIsError] = useState(false);
 
   const { data: session } = useSession();
+  const router = useRouter();
 
   const form = useForm({
     resolver: zodResolver(AcceptMessageSchema),
@@ -131,7 +133,14 @@ function UserDashboard() {
 
   return (
     <div className="my-8 mx-4 md:mx-8 lg:mx-auto p-6 bg-white rounded w-full max-w-6xl">
+      <div className="flex items-center justify-between mb-4"></div>
       <h1 className="text-4xl font-bold mb-4">User Dashboard</h1>
+      <Button
+          className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded"
+          onClick={() => router.push('/')}
+        >
+          Go to Home
+        </Button>
 
       {feedbackMessage && (
         <div
