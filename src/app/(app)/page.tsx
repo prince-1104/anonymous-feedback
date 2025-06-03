@@ -1,20 +1,15 @@
-'use client';
+"use client";
 
-import { Mail } from 'lucide-react';
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-} from '@/components/ui/card';
+import { Mail } from "lucide-react";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   Carousel,
   CarouselContent,
   CarouselItem,
-} from '@/components/ui/carousel';
+} from "@/components/ui/carousel";
 
-import Autoplay from 'embla-carousel-autoplay';
-import messages from '@/messages.json';
+import Autoplay from "embla-carousel-autoplay";
+import messages from "@/messages.json";
 
 // interface Message {
 //   title: string;
@@ -36,7 +31,6 @@ export default function Home() {
           </p>
         </section>
 
-       
         <Carousel
           plugins={[Autoplay({ delay: 2000 })]}
           className="w-full max-w-lg md:max-w-xl"
@@ -64,10 +58,31 @@ export default function Home() {
         </Carousel>
       </main>
 
-      {/* Footer */}
-      <footer className="text-center p-4 md:p-6 bg-gray-900 text-white">
-        © {new Date().getFullYear()} True Feedback. All rights reserved.
-      </footer>
+     
+      <footer className="text-center p-6 bg-gray-900 text-white">
+  <div className="flex flex-col md:flex-row justify-center items-center gap-4">
+    {/* Feedback Button */}
+    <a
+      href="https://feedback.doptonin.in/u/Prince"
+      target="_blank"
+      rel="noopener noreferrer"
+      className="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-5 py-2 rounded-lg shadow transition-transform transform hover:scale-105"
+    >
+      Feedback to Admin
+    </a>
+
+    {/* LinkedIn Button */}
+    <a
+      href="https://www.linkedin.com/in/prince1104/"
+      target="_blank"
+      rel="noopener noreferrer"
+      className="bg-blue-500 hover:bg-blue-600 text-white font-semibold px-5 py-2 rounded-lg shadow transition-transform transform hover:scale-105"
+    >
+      LinkedIn
+    </a>
+  </div>
+</footer>
+
     </>
   );
 }
