@@ -1,7 +1,15 @@
 "use client";
 
+import { useSession } from "next-auth/react";
+import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import { Mail } from "lucide-react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import {
   Carousel,
   CarouselContent,
@@ -11,16 +19,36 @@ import {
 import Autoplay from "embla-carousel-autoplay";
 import messages from "@/messages.json";
 
-// interface Message {
-//   title: string;
-//   content: string;
-//   received: string;
-// }
-
 export default function Home() {
+  const { data: session, status } = useSession();
+  const router = useRouter();
+  const [isRedirecting, setIsRedirecting] = useState(false);
+
+  useEffect(() => {
+    if (status === "loading") return;
+
+    setIsRedirecting(true);
+
+    if (session) {
+      router.push("/dashboard");
+    } else {
+      router.push("/sign-up");
+    }
+  }, [session, status, router]);
+
+  if (status === "loading" || isRedirecting) {
+    return (
+      <main className="min-h-screen flex items-center justify-center bg-gray-800 text-white">
+        <div className="text-center">
+          <h2 className="text-2xl font-semibold mb-2">Loading...</h2>
+          <p>Redirecting you shortly. Please wait.</p>
+        </div>
+      </main>
+    );
+  }
+
   return (
     <>
-      {/* Main content */}
       <main className="flex-grow flex flex-col items-center justify-center px-4 md:px-24 py-12 bg-gray-800 text-white">
         <section className="text-center mb-8 md:mb-12">
           <h1 className="text-3xl md:text-5xl font-bold">
@@ -58,31 +86,26 @@ export default function Home() {
         </Carousel>
       </main>
 
-     
       <footer className="text-center p-6 bg-gray-900 text-white">
-  <div className="flex flex-col md:flex-row justify-center items-center gap-4">
-    {/* Feedback Button */}
-    <a
-      href="https://feedback.doptonin.in/u/Prince"
-      target="_blank"
-      rel="noopener noreferrer"
-      className="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-5 py-2 rounded-lg shadow transition-transform transform hover:scale-105"
-    >
-      Feedback to Admin
-    </a>
-
-    {/* LinkedIn Button */}
-    <a
-      href="https://www.linkedin.com/in/prince1104/"
-      target="_blank"
-      rel="noopener noreferrer"
-      className="bg-blue-500 hover:bg-blue-600 text-white font-semibold px-5 py-2 rounded-lg shadow transition-transform transform hover:scale-105"
-    >
-      LinkedIn
-    </a>
-  </div>
-</footer>
-
+        <div className="flex flex-col md:flex-row justify-center items-center gap-4">
+          <a
+            href="https://feedback.doptonin.in/u/Prince"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-5 py-2 rounded-lg shadow transition-transform transform hover:scale-105"
+          >
+            Feedback to Admin
+          </a>
+          <a
+            href="https://www.linkedin.com/in/prince1104/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="bg-blue-500 hover:bg-blue-600 text-white font-semibold px-5 py-2 rounded-lg shadow transition-transform transform hover:scale-105"
+          >
+            LinkedIn
+          </a>
+        </div>
+      </footer>
     </>
   );
 }
